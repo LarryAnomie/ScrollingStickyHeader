@@ -1,0 +1,86 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+
+
+/* Space out content a bit */
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  width: 100%;
+  height: 60px;
+  border-bottom: 1px solid #e5e5e5;
+  opacity: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px 0;
+  z-index: 900;
+  transform: translate(0, 0);
+  transition: transform .5s .5s,background .5s,color .1s;
+  user-select: none;
+}
+
+.header--visible {
+  background: rgba(255,255,255,0.7);
+  opacity: 1;
+  transition: transform .3s, height .3s, background .4s, opacity .3s;
+  transform: translate(0,0);
+  position: fixed;
+}
+
+.header--hidden {
+opacity: 0;
+transform: translate(0, -60px);
+transition: transform .2s,background .3s,color .3s,opacity 0 .3s;
+}
+
+.header--expanded {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  cursor: default;
+  background: rgba(255,255,255,.85);
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+
+}
