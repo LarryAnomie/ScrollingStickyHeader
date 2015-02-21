@@ -7,7 +7,6 @@ Dependencies:
 
 jQuery, Lodash/Underscore
 
-// grab an element
-var myElement = document.querySelector("header");
-// construct an instance of Headroom, passing the element
-var headroom  = new Headroom(myElement);
+**Usage**
+
+var stickyHeader = new StickyHeader($('.js-header'));
