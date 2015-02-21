@@ -9,4 +9,4 @@ jQuery, Lodash/Underscore
 
 **Usage**
 
-  var stickyHeader = new StickyHeader($('.js-header'));
+    var stickyHeader = new StickyHeader($('.js-header'));
