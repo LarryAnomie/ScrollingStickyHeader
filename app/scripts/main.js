@@ -1,120 +1,86 @@
-(function() {
+/* global $, _ */
 
-  var StickyHeader = function($el) {
+(function(w, $) {
 
-    if ( !(this instanceof StickyHeader) ) {
-        return new Header( $el );
-    }
+    'use strict';
 
-    // cached DOM
+    var StickyHeader = function($el) {
 
-    this.$el = $el;
-    this.window = window;
-    this.$window = $(window);
+        if (!(this instanceof StickyHeader)) {
+            return new StickyHeader($el);
+        }
 
-    this.$nav = this.$el.find('.js-header-nav');
-    this.$toggler = this.$el.find('.js-header-toggler');
-    this.$content = $('.content');
+        // cached DOM
+        this.$el = $el;
+        this.window = w;
+        this.$window = $(this.window);
 
-    // header hidden class
-    this.classHidden = 'header--hidden';
-    // header visible class
-    this.classVisible = 'header--visible';
-    // header expanded class
-    this.classExpanded = 'header--expanded';
+        // css classes
+        this.classHidden = 'header--hidden';         // header hidden class
+        this.classVisible = 'header--visible';       // header visible class
 
-    // variables
+        // variables
+        this.ticking = false;
+        this.latestKnownScrollY = 0;
+        this.previousY = 0;
 
-    this.ticking = false;
-    this.latestKnownScrollY = 0;
-    this.previousY = 0;
-    this.isOpen = false;
+        // constants
+        this.HEADER_HEIGHT = this.$el.height(); // gets hidden once scrolled past this point
 
-    // constants
+        // kick off
+        this._init();
 
-    this.HEADER_HEIGHT = 82; // gets hidden once scrolled past this point
-    this.THROTTLE = 5; // ensure a user scrolls more than this many pixels before show/hidding header
+    };
 
-    this._init();
+    StickyHeader.prototype._init = function() {
 
-  }
+        // attach scroll event to window
+        this.$window.on('scroll', _.bind(this._onScroll, this));
 
-  StickyHeader.prototype._init = function () {
+    };
 
-    console.log('init')
-      // attach scroll event to window
-      this.$window.on( 'scroll', _.bind( this._onScroll, this ) );
+    StickyHeader.prototype._requestTick = function() {
+        if (!this.ticking) {
+            requestAnimationFrame(_.bind(this._update, this));
+        }
+        this.ticking = true;
+    };
 
-      // attach click event to toggler
-      this.$toggler.on( 'click', _.bind( this._onClick, this ) );
+    StickyHeader.prototype._update = function() {
+        // reset the tick so we can
+        // capture the next onScroll
+        this.ticking = false;
 
-      // kick off
-      requestAnimationFrame(_.bind( this._update, this ));
-
-
-  };
-
-  StickyHeader.prototype._requestTick = function() {
-      if (!this.ticking) {
-          requestAnimationFrame(_.bind( this._update, this ));
-      }
-      this.ticking = true;
-  };
-
-  StickyHeader.prototype._update = function() {
-      // reset the tick so we can
-      // capture the next onScroll
-      this.ticking = false;
-
-      console.log('update')
-
-      if (!this.$el.hasClass(this.classExpanded)) { // don't need to calculate when header is exapanded
-
-          if (this.latestKnownScrollY > this.HEADER_HEIGHT) { // scrolled past the header
+        if (this.latestKnownScrollY > this.HEADER_HEIGHT) { // scrolled past the header
 
             if (this.latestKnownScrollY < this.previousY) { // scrolling up
 
-              this.$el.removeClass(this.classHidden).addClass(this.classVisible);
+                this.$el.removeClass(this.classHidden).addClass(this.classVisible);
 
             } else { // scrolling down
 
-              this.$el.removeClass(this.classVisible).addClass(this.classHidden);
+                this.$el.removeClass(this.classVisible).addClass(this.classHidden);
             }
 
-          } else if (this.latestKnownScrollY <= 0) { // at the top of the page
+        } else if (this.latestKnownScrollY <= 0) { // at the top of the page
 
             this.$el.removeClass(this.classVisible).removeClass(this.classHidden);
-          }
+        }
 
-      }
+        // if user is at the bottom of page show header
+        if ((window.innerHeight + this.latestKnownScrollY) >= document.body.offsetHeight) {
+            this.$el.removeClass(this.classHidden);
+        }
 
-      // if user is at the bottom of page show header
-      if ((window.innerHeight + this.latestKnownScrollY) >= document.body.offsetHeight) {
-        this.$el.removeClass(this.classHidden);
-      }
+        this.previousY = this.latestKnownScrollY;
+    };
 
-      this.previousY = this.latestKnownScrollY;
-  };
+    StickyHeader.prototype._onScroll = function() {
+        this.previousY = this.latestKnownScrollY;
+        this.latestKnownScrollY = window.scrollY; // current scroll position
+        this._requestTick();
+    };
 
-  StickyHeader.prototype._onScroll = function() {
-      this.previousY = this.latestKnownScrollY;
-      this.latestKnownScrollY = window.scrollY; // current scroll position
-      this._requestTick();
-  };
+    var stickyHeader = new StickyHeader($('.js-header'));
 
-  StickyHeader.prototype._onClick = function(e) {
-
-      var $self = $(e.target);
-
-      e.preventDefault();
-
-      this.$el.toggleClass(this.classExpanded);
-
-      this.$toggler.toggleClass('active');
-  };
-
-
-  var stickyHeader = new StickyHeader($('.js-header'));
-
-
-}());
+}(window, $));
