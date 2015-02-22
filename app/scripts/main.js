@@ -69,7 +69,9 @@
     StickyHeader.prototype._init = function() {
 
         // attach scroll event to window
-        this.$window.on('scroll', _.bind(this._onScroll, this));
+        //this.$window.on('scroll', _.bind(this._onScroll, this));
+
+        this.$window.on('scroll', this._onScroll.bind(this));
 
     };
 
@@ -79,14 +81,14 @@
      */
     StickyHeader.prototype._stick = function() {
         this.$el.removeClass(this.classHidden).addClass(this.classVisible);
-    }
+    };
 
     /**
      * hides header
      */
     StickyHeader.prototype._unStick = function() {
         this.$el.removeClass(this.classVisible).addClass(this.classHidden);
-    }
+    };
 
     StickyHeader.prototype._update = function() {
         // reset the tick so we can
@@ -123,7 +125,9 @@
      */
     StickyHeader.prototype._requestTick = function() {
         if (!this.ticking) {
-            requestAnimationFrame(_.bind(this._update, this));
+            //requestAnimationFrame(_.bind(this._update, this));
+
+            requestAnimationFrame(this._update.bind(this));
         }
         this.ticking = true;
     };
