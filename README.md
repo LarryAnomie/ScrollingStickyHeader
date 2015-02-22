@@ -1,11 +1,12 @@
 # Scrolling Sticky Header
-A performant scrolling sticky header implementation
+
+A performant scrolling sticky header implementation that uses RequestAnimationFrame to debounce scroll events.
 
 Hides your header when scrolling down, slides it in when scrolling up.
 
 Dependencies:
 
-jQuery, Lodash/Underscore
+jQuery
 
 **Usage**
 
