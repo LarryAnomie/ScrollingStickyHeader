@@ -38,8 +38,13 @@
         }
     }());
 
+    /**
+     * A module to hide and show a header based on user scrolling
+     * @constructor
+     */
     var StickyHeader = function($el) {
 
+        // ensure fn is called with new
         if (!(this instanceof StickyHeader)) {
             return new StickyHeader($el);
         }
@@ -66,15 +71,15 @@
 
     };
 
+    /**
+     * kick off
+     */
     StickyHeader.prototype._init = function() {
 
         // attach scroll event to window
-        //this.$window.on('scroll', _.bind(this._onScroll, this));
-
         this.$window.on('scroll', this._onScroll.bind(this));
 
     };
-
 
     /**
      * shows header
@@ -90,9 +95,12 @@
         this.$el.removeClass(this.classVisible).addClass(this.classHidden);
     };
 
+    /**
+     * figures out whether we need to hide or show the header
+     * called inside a requestAnimationFrame
+     */
     StickyHeader.prototype._update = function() {
-        // reset the tick so we can
-        // capture the next onScroll
+        // reset the tick so we can capture the next onScroll
         this.ticking = false;
 
         if (this.latestScrollY > this.HEADER_HEIGHT) { // scrolled past the header
@@ -116,25 +124,25 @@
             this.$el.removeClass(this.classHidden);
         }
 
-        this.previousY = this.latestScrollY;
+        this.previousY = this.latestScrollY; // update our Y position record
     };
 
     /**
-     *
-     * @return {[type]} [description]
+     * checks whether an update is currently taking place, if not calls an update
+     * via requestAnimationFGrame
      */
     StickyHeader.prototype._requestTick = function() {
         if (!this.ticking) {
-            //requestAnimationFrame(_.bind(this._update, this));
-
             requestAnimationFrame(this._update.bind(this));
         }
+
         this.ticking = true;
     };
 
-
     /**
      * scroll handler
+     * updates perviousY record and sets latestY record to current scroll position
+     * calls requestTick
      */
     StickyHeader.prototype._onScroll = function() {
         this.previousY = this.latestScrollY;
@@ -142,6 +150,7 @@
         this._requestTick();
     };
 
+    // instantiate the module
     var stickyHeader = new StickyHeader($('.js-header'));
 
 }(window, $));
