@@ -1,6 +1,6 @@
 # Scrolling Sticky Header
 
-A performant scrolling sticky header implementation that uses RequestAnimationFrame to debounce scroll events.
+A performant scrolling sticky header implementation that uses RequestAnimationFrame to debounce scroll events and css transitions for animation.
 
 Hides your header when scrolling down, slides it in when scrolling up.
 
