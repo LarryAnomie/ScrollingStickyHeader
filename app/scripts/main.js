@@ -38,6 +38,8 @@
     }());
 
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Compatibility
+    //
+    /* jshint ignore:start */
     if (!Function.prototype.bind) {
         Function.prototype.bind = function(oThis) {
             if (typeof this !== 'function') {
@@ -60,6 +62,7 @@
             return fBound;
         };
     }
+    /* jshint ignore:end */
 
     /**
      * A module to hide and show a header based on user scrolling
@@ -87,8 +90,7 @@
         this.previousY = 0;
 
         this.supportPageOffset = window.pageXOffset !== undefined;
-        this.isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
-
+        this.isCSS1Compat = ((document.compatMode || '') === 'CSS1Compat');
 
         // constants
         this.HEADER_HEIGHT = this.$el.height(); // gets hidden once scrolled past this point
@@ -173,7 +175,7 @@
     StickyHeader.prototype._getY = function() {
         var y = this.supportPageOffset ? window.pageYOffset : this.isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
         return y;
-    }
+    };
 
     /**
      * scroll handler
