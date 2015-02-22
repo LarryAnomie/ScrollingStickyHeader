@@ -8,6 +8,20 @@ Dependencies:
 
 * jQuery
 
+**Quick Setup**
+
+Install node dependencies: 
+
+    npm install
+    
+Install front-end dependencies:
+
+    bower install
+    
+Quickly run a local server:
+
+    grunt serve
+
 **Usage**
 
     var stickyHeader = new StickyHeader($('.js-header'));
